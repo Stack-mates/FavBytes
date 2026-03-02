@@ -7,8 +7,6 @@ import NavBar from './NavigationBar';
 import ImageUpload from './ImageUpload/ImageUpload';
 
 export default function App() {
-
-
   return (
     <div className="app-container">
       <LogIn />
@@ -19,13 +17,12 @@ export default function App() {
 
         <div className="main-area">
           <Homepage />
-          <ImagePage/>
-          <ImageUpload/>
-
-          <div className="gallery-section">
-            <Gallery />
-          </div>
+          <ImagePage />
+          <ImageUpload />
         </div>
+      </div>
+      <div className="gallery-section">
+        <Gallery />
       </div>
     </div>
   );

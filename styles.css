@@ -13,10 +13,10 @@
 }
 
 @plugin "daisyui/theme" {
-  name: "lemonade";
+  name: 'lemonade';
   default: false;
   prefersdark: false;
-  color-scheme: "light";
+  color-scheme: 'light';
   --color-base-100: oklch(98.71% 0.02 123.72);
   --color-base-200: oklch(91.8% 0.018 123.72);
   --color-base-300: oklch(84.89% 0.017 123.72);
@@ -47,7 +47,6 @@
   --noise: 0;
 }
 
-
 .app-container {
   height: 100vh;
   display: flex;
@@ -62,44 +61,62 @@
 }
 
 .sidebar {
-  width: 250px;
+  width: 15%;
+  height:75%;
+  top:auto;
   background-color: #fff7d9;
   flex-shrink: 0;
 }
 
 .main-area {
   flex: 1;
-  background-color: #829461;
   display: flex;
+  flex-wrap: wrap;
+  background-color: #829461;
+  width: 85%;
+  position: relative;
   flex-direction: column;
 }
-
+.homePage {
+  background-color: #abb95b;
+  flex: 1;
+  display: flex;
+  justify-content: right;
+  position: relative;
+  height: 95%;
+    width: 100%;
+}
 .map {
   flex: 1;
-  top: 5%;
-  width: 50%;
+  display: flex;
+  max-width:90%;
+  max-height: 75%;
+  padding: 25px;
   background-color: #abb95b;
-  position:fixed-left;
-  min-height: 75%;
-}
-.map-overlay {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 230px;
-  padding: 10px;
-  color: #1a2224;
-  font: 12px/20px sans-serif;
-  display: none;
+  position: relative;
 }
 
-.map-overlay-inner {
-  background: #fff;
-  padding: 10px;
-  border-radius: 3px;
+
+.current-image {
+  background-color: #a92d63;
+  flex: 1;
+  display: flex;
+  position: relative;
+  max-height: 5%;
 }
+.image-upload {
+  background-color: #2e3890;
+  flex: 1;
+  display: flex;
+  position: relative;
+  max-height: 5%;
+}
+
+
+
+
 .gallery-section {
-  height: 200px;
+  height: 25%;
   position: absolute;
   width: 100%;
   top: 75%;

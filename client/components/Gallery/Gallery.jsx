@@ -1,5 +1,8 @@
 import GalleryItem from "./GalleryItem";
+import Swiper from "swiper";
+import 'swiper/css/bundle';
 
+const swiper = new Swiper();
 
 export default function Gallery () {
 
