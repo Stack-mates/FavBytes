@@ -82,17 +82,17 @@
   background-color: #abb95b;
   flex: 1;
   display: flex;
-  justify-content: right;
+  justify-content: center;
   position: relative;
-  height: 5%;
   width: 100%;
 }
 
 .map {
   flex: 1;
-  max-width: 90%;
-  max-height: 90%;
-  padding: 25px;
+  max-width: 95%;
+  top:0%;
+  bottom:auto;
+  padding: 5%;
   background-color: #abb95b;
   position: relative;
 }
