@@ -15,6 +15,17 @@ module.exports = {
     clean: true,
   },
 
+  devServer: {
+    port: 8080,
+    historyApiFallback: true,
+    proxy: [
+      {
+        context: ['/api', '/auth'],
+        target: 'http://localhost:3001',
+      }
+    ],
+  },
+
   module: {
     rules: [
       {
@@ -55,6 +66,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.MAPBOX_TOKEN': JSON.stringify(process.env.MAPBOX_TOKEN || ''),
+      'process.env.GOOGLE_CLIENT_ID': JSON.stringify(process.env.GOOGLE_CLIENT_ID || ''),
     }),
   ],
 };
