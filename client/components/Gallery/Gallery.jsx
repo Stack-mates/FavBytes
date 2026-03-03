@@ -13,23 +13,30 @@ import 'swiper/css/scrollbar';
 
 
 export default function Gallery({searchArr, setSearchArr}) {
+  const galleryArr = searchArr.map((e, k)=>{})
   return (
     <Swiper
-      // install Swiper modules
+
       modules={[Navigation, Pagination, Scrollbar, A11y]}
-      spaceBetween={50}
-      slidesPerView={3}
+
+      spaceBetween={25
+
+      }
+      slidesPerView={2
+      }
       navigation
       pagination={{ clickable: true }}
+
       scrollbar={{ draggable: true }}
       onSwiper={(swiper) => console.log(swiper)}
+
       onSlideChange={() => console.log('slide change')}
     >
-      <SwiperSlide>Slide 1</SwiperSlide>
-      <SwiperSlide>Slide 2</SwiperSlide>
-      <SwiperSlide>Slide 3</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-      ...
+
+      <SwiperSlide>Slide 1<GalleryItem/></SwiperSlide>
+      <SwiperSlide>Slide 2<GalleryItem/></SwiperSlide>
+      <SwiperSlide>Slide 3<GalleryItem/></SwiperSlide>
+      <SwiperSlide>Slide 4<GalleryItem/></SwiperSlide>
     </Swiper>
   );
 }
