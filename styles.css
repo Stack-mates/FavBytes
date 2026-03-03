@@ -57,27 +57,37 @@
   padding: 25px;
 }
 .gallery-item {
+  display: flex;
   height: 90%;
   width: 90%;
-  padding: 25%;
+  justify-content: space-around;
+  padding: 25px;
   background-color: #30364f;
   border-radius: 12px;
+  flex-direction: column;
 }
 .gallery-thumbnail {
-  
+  display: flex;
+  background-color: #f2aebb;
+  height: 90%;
+  width: 90%;
+  padding: 25px;
 }
 .swiper {
+  display: flex;
   width: 95%;
   height: 95%;
 }
 .swiper-container {
+  display: flex;
   width: 70%;
   height: 95%;
-  line-height: 200px;
+
   text-align: center;
 }
 
 .swiper-slide {
+  display: flex;
   background-color: rgb(4 47 46);
   color: #829461;
   width: 100%;
@@ -134,8 +144,8 @@
 .map {
   flex: 1;
   border-radius: 12px;
-  max-width: 66%;
-  max-height: 85%;
+  max-width: 70%;
+  max-height: 95%;
 
   background-color: #abb95b;
   position: relative;

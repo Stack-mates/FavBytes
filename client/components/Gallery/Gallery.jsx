@@ -22,7 +22,8 @@ export default function Gallery({searchArr, setSearchArr}) {
       spaceBetween={25
 
       }
-      slidesPerView={2
+      slidesPerView={3
+        
       }
       navigation
       pagination={{ clickable: true }}
@@ -37,6 +38,7 @@ export default function Gallery({searchArr, setSearchArr}) {
       <SwiperSlide>Slide 2<GalleryItem/></SwiperSlide>
       <SwiperSlide>Slide 3<GalleryItem/></SwiperSlide>
       <SwiperSlide>Slide 4<GalleryItem/></SwiperSlide>
+      
     </Swiper>
   );
 }
