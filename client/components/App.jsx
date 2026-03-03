@@ -6,19 +6,22 @@ import ImagePage from './ImagePage/ImagePage';
 import NavBar from './NavigationBar';
 import ImageUpload from './ImageUpload/ImageUpload';
 
-function MainView({ view }) {
+function MainView({ view, isActive, setIsActive }) {
   return view === 'ImageUpload' ? (
-    <ImageUpload />
+    <ImageUpload isActive={isActive} setIsActive={setIsActive} />
   ) : view === 'ImagePage' ? (
-    <ImagePage />
+    <ImagePage isActive={isActive} setIsActive={setIsActive} />
+  ) : view === 'ImageUpload' ? (
+    <ImageUpload isActive={isActive} setIsActive={setIsActive} />
   ) : (
     <HomePage />
   );
 }
 
 export default function App() {
-  const [isShowingSidebar, setIsShowingSidebar] = useState(true);
+  const [isShowingSidebar, setIsShowingSidebar] = useState(false);
   const [view, setView] = useState('HomePage');
+  const [isActive, setIsActive] = useState(false);
 
   return (
     <div id="app-container" className="app-container">
@@ -33,7 +36,7 @@ export default function App() {
             </button>
 
             <div id="main-view" className="main-view">
-              <MainView view={view} />
+              <MainView view={view} isActive={isActive} setIsActive={setIsActive} />
             </div>
           </div>
         </>

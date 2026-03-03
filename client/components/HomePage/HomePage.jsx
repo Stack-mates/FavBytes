@@ -1,9 +1,7 @@
 import Map from './Map';
-import { useState } from 'react';
 
-export default function HomePage() {
-  const [isActive, setIsActive] = useState(false);
-
+export default function HomePage({ isActive = true, setIsActive }) {
+  console.log(!isActive ? 'homepage is active' : 'homepage isnot active');
   return (
     <div id="homePage" className="homePage">
       <div id="map" className="map">

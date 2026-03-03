@@ -1,4 +1,5 @@
 export default function NavBar({ view, setView }) {
+  
   return (
     <div id="sidebar" className="sidebar">
       <div id="navigation-bar" className="navigation-bar">
@@ -20,6 +21,15 @@ export default function NavBar({ view, setView }) {
                 }}
               >
                 {'Go to Upload'}
+              </button>
+            </li>
+                        <li>
+              <button
+                onClick={() => {
+                  setView('ImagePage');
+                }}
+              >
+                {'Go to Image'}
               </button>
             </li>
             <li>{view}</li>
