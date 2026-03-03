@@ -13,7 +13,7 @@ export default function ImageUpload({ isActive = true, setIsActive }) {
         </div>
         <div id="image-upload-title" className="image-upload-title">
           <h3> upload image title here </h3>
-        </div>{' '}
+        </div>
         <div id="image-upload-description" className="image-upload-description">
           <h3> upload image description here </h3>
         </div>
