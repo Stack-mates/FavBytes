@@ -1,7 +1,8 @@
 import ImageTags from './ImageTags';
 
 export default function ImagePage({ isActive = true, setIsActive }) {
-  console.log(!isActive ? 'ImagePage is active' : 'ImagePage isnot active');
+
+  //console.log(!isActive ? 'ImagePage is active' : 'ImagePage isnot active');
   return (
     <div id="current-image" className="current-image">
       <div id="current-image-box1" className="current-image-box1">

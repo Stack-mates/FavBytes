@@ -25,6 +25,7 @@
   background-color: #5459ac;
   background-color: #393d7e;
   background-color: #f2aebb;
+  background-color: #abb95b;
 }
 .app-container {
   height: 100vh;
@@ -49,12 +50,56 @@
   position: fixed;
   width: 100%;
   top: 70%;
-  background-color: #e7efc7;
+  display: flex;
+  justify-content: center;
+  background-color: #427a76;
   overflow-y: auto;
+  padding: 25px;
+}
+.gallery-item {
+  height: 90%;
+  width: 90%;
+  padding: 25%;
+  background-color: #30364f;
+  border-radius: 12px;
+}
+.gallery-thumbnail {
+  
 }
 .swiper {
+  width: 95%;
+  height: 95%;
+}
+.swiper-container {
   width: 70%;
   height: 95%;
+  line-height: 200px;
+  text-align: center;
+}
+
+.swiper-slide {
+  background-color: rgb(4 47 46);
+  color: #829461;
+  width: 100%;
+  padding: 25px;
+  border-radius: 12px;
+  font-size: 25px;
+}
+
+.swiper-slide:nth-child(2) {
+  background-color: #acbac4;
+}
+
+.swiper-slide:nth-child(3) {
+  background-color: #f0f0db;
+}
+
+.swiper-slide:nth-child(4) {
+  background-color: #f1e3d3;
+}
+
+.swiper-slide:nth-child(5) {
+  background-color: #e1d9bc;
 }
 
 .main-area {
