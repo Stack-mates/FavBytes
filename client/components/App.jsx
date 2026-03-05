@@ -32,6 +32,14 @@ export default function App() {
     setUser(null);
   };
 
+  const handleToggleSidebar = () => {
+    setIsShowingSidebar(!isShowingSidebar);
+  };
+
+  const handleToggleGallery = () => {
+    setIsShowingGallery(!isShowingGallery);
+  };
+
   return (
     <div id="app-container" className="app-container">
       {!user ? (
@@ -63,7 +71,14 @@ export default function App() {
 
           <div id="content-row" className="content-row">
             <>
-              {isShowingSidebar && <NavBar setView={setView} view={view} />}
+              {isShowingSidebar && (
+                <NavBar 
+                  setView={setView} 
+                  view={view} 
+                  isShowingGallery={isShowingGallery} 
+                  onToggleGallery={handleToggleGallery} 
+                />
+              )}
               <div id="main-area" className="main-area">
                 <button onClick={() => setIsShowingSidebar(!isShowingSidebar)}>
                   Toggle Sidebar Here
@@ -79,9 +94,11 @@ export default function App() {
               </div>
             </>
           </div>
-          <div id="gallery-section" className="gallery-section">
-            <Gallery searchArr={searchArr} setSearchArr={setSearchArr} />
-          </div>
+          {isShowingGallery && (
+            <div id="gallery-section" className="gallery-section">
+              <Gallery searchArr={searchArr} setSearchArr={setSearchArr} />
+            </div>
+          )}
         </>
       )}
     </div>
