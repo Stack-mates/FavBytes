@@ -32,9 +32,6 @@ export default function ImagePage({ isActive = true, setIsActive }) {
           <ImageTags />
         </div>
       </div>
-      <div id="gallery-section" className="gallery-section">
-        <Gallery searchArr={searchArr} setSearchArr={setSearchArr} />
-      </div>
     </div>
   );
 }
