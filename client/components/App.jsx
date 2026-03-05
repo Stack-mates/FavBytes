@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HomePage from './HomePage/HomePage';
 import Gallery from './Gallery/Gallery';
 import LogIn from './LogIn';
@@ -6,13 +6,13 @@ import ImagePage from './ImagePage/ImagePage';
 import NavBar from './NavigationBar';
 import ImageUpload from './ImageUpload/ImageUpload';
 
-function MainView({ view, isActive, setIsActive }) {
+function MainView({ view, isActive, setIsActive, user }) {
   return view === 'ImageUpload' ? (
     <ImageUpload isActive={isActive} setIsActive={setIsActive} />
   ) : view === 'ImagePage' ? (
     <ImagePage isActive={isActive} setIsActive={setIsActive} />
   ) : (
-    <HomePage />
+    <HomePage user={user} />
   );
 }
 
@@ -24,12 +24,28 @@ export default function App() {
   const [view, setView] = useState('HomePage');
   const [isActive, setIsActive] = useState(false);
 
+  useEffect(() => {
+    // Check for existing session on mount
+    fetch('/auth/me')
+      .then(res => {
+        if (res.ok) return res.json();
+        throw new Error('No session');
+      })
+      .then(data => setUser(data.user))
+      .catch(() => setUser(null));
+  }, []);
+
   const handleLoginSuccess = (userData) => {
     setUser(userData);
   };
 
-  const handleLogout = () => {
-    setUser(null);
+  const handleLogout = async () => {
+    try {
+      await fetch('/auth/logout', { method: 'POST' });
+      setUser(null);
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
   };
 
   const handleToggleSidebar = () => {
@@ -80,7 +96,7 @@ export default function App() {
                 />
               )}
               <div id="main-area" className="main-area">
-                <button onClick={() => setIsShowingSidebar(!isShowingSidebar)}>
+                <button onClick={handleToggleSidebar}>
                   Toggle Sidebar Here
                 </button>
 
@@ -89,6 +105,7 @@ export default function App() {
                     view={view}
                     isActive={isActive}
                     setIsActive={setIsActive}
+                    user={user}
                   />
                 </div>
               </div>
