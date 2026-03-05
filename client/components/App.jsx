@@ -20,6 +20,7 @@ export default function App() {
   const [searchArr, setSearchArr] = useState([]);
   const [user, setUser] = useState(null);
   const [isShowingSidebar, setIsShowingSidebar] = useState(false);
+  const [isShowingGallery, setIsShowingGallery] = useState(false);
   const [view, setView] = useState('HomePage');
   const [isActive, setIsActive] = useState(false);
 
@@ -37,7 +38,16 @@ export default function App() {
         <LogIn onLoginSuccess={handleLoginSuccess} />
       ) : (
         <>
-          <div className="user-header" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 16px' }}>
+          <div
+            className="user-header"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '8px 16px',
+            }}
+          >
+            <span>FaveBytes! save your favorites.</span>
             {user.picture && (
               <img
                 src={user.picture}
@@ -45,7 +55,7 @@ export default function App() {
                 style={{ width: 32, height: 32, borderRadius: '50%' }}
               />
             )}
-            <span>Welcome, {user.name}</span>
+            <span>Welcome, {user.name}! FaveBytes! save your favorites.</span>
             <button onClick={handleLogout} style={{ marginLeft: 'auto' }}>
               Log out
             </button>
