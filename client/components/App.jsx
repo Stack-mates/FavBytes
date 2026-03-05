@@ -17,11 +17,12 @@ function MainView({ view, isActive, setIsActive }) {
 }
 
 export default function App() {
+  const [searchArr, setSearchArr] = useState([]);
   const [user, setUser] = useState(null);
   const [isShowingSidebar, setIsShowingSidebar] = useState(false);
+  const [isShowingGallery, setIsShowingGallery] = useState(false);
   const [view, setView] = useState('HomePage');
   const [isActive, setIsActive] = useState(false);
-  const [searchArr, setSearchArr] = useState(['img1', 'img2', 'img3', 'img4']);
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
@@ -31,13 +32,30 @@ export default function App() {
     setUser(null);
   };
 
+  const handleToggleSidebar = () => {
+    setIsShowingSidebar(!isShowingSidebar);
+  };
+
+  const handleToggleGallery = () => {
+    setIsShowingGallery(!isShowingGallery);
+  };
+
   return (
     <div id="app-container" className="app-container">
       {!user ? (
         <LogIn onLoginSuccess={handleLoginSuccess} />
       ) : (
         <>
-          <div className="user-header" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 16px' }}>
+          <div
+            className="user-header"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '8px 16px',
+            }}
+          >
+            <span style={{ marginRight: 'auto' }} >FaveBytes! save your favorites.</span>
             {user.picture && (
               <img
                 src={user.picture}
@@ -45,7 +63,7 @@ export default function App() {
                 style={{ width: 32, height: 32, borderRadius: '50%' }}
               />
             )}
-            <span>Welcome, {user.name}</span>
+            <span>Welcome, {user.name}!</span>
             <button onClick={handleLogout} style={{ marginLeft: 'auto' }}>
               Log out
             </button>
@@ -53,7 +71,14 @@ export default function App() {
 
           <div id="content-row" className="content-row">
             <>
-              {isShowingSidebar && <NavBar setView={setView} view={view} />}
+              {isShowingSidebar && (
+                <NavBar 
+                  setView={setView} 
+                  view={view} 
+                  isShowingGallery={isShowingGallery} 
+                  onToggleGallery={handleToggleGallery} 
+                />
+              )}
               <div id="main-area" className="main-area">
                 <button onClick={() => setIsShowingSidebar(!isShowingSidebar)}>
                   Toggle Sidebar Here
@@ -69,9 +94,11 @@ export default function App() {
               </div>
             </>
           </div>
-          <div id="gallery-section" className="gallery-section">
-            <Gallery searchArr={searchArr} setSearchArr={setSearchArr} />
-          </div>
+          {isShowingGallery && (
+            <div id="gallery-section" className="gallery-section">
+              <Gallery searchArr={searchArr} setSearchArr={setSearchArr} />
+            </div>
+          )}
         </>
       )}
     </div>
