@@ -295,3 +295,14 @@
   padding: 5px;
   border-radius: 12px;
 }
+.navigation-bar nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.navigation-bar nav button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: auto;
+}

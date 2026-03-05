@@ -138,11 +138,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-<<<<<<< HEAD
 
 #webpack
 webpack.config.cjs
-=======
-# Webpack
-webpack.config.cjs
->>>>>>> 14062f6b19bac506bf1fe202902d92755742bee5

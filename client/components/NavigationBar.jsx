@@ -33,8 +33,8 @@ export default function NavBar({ view, setView, isShowingGallery, onToggleGaller
                 {isShowingGallery ? 'Hide Gallery' : 'Show Gallery'}
               </button>
             {/* Page view */}
-            {view}          
         </nav>
+        {view}          
       </div>
     </div>
   );
