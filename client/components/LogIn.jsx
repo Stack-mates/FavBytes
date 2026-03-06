@@ -24,6 +24,7 @@ export default function LogIn({ onLoginSuccess }) {
       const res = await fetch('/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           token: credentialResponse.credential,
           location,

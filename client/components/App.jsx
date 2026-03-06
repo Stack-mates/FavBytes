@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import HomePage from './HomePage/HomePage';
 import Gallery from './Gallery/Gallery';
 import LogIn from './LogIn';
@@ -23,6 +23,21 @@ export default function App() {
   const [isShowingGallery, setIsShowingGallery] = useState(false);
   const [view, setView] = useState('HomePage');
   const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/auth/me', { credentials: 'include' });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.user);
+        }
+      } catch (err) {
+        console.error('Auth check failed:', err);
+      }
+    };
+    checkAuth();
+  }, []);
 
   const handleLoginSuccess = (userData) => {
     console.log(userData);
