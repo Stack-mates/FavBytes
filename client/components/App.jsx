@@ -5,8 +5,9 @@ import LogIn from './LogIn';
 import ImagePage from './ImagePage/ImagePage';
 import NavBar from './NavigationBar';
 import ImageUpload from './ImageUpload/ImageUpload';
+import logo from '../../public/images/FavBytes.png';
 
-function MainView({ view, isActive, setIsActive, }) {
+function MainView({ view, isActive, setIsActive }) {
   return view === 'ImageUpload' ? (
     <ImageUpload isActive={isActive} setIsActive={setIsActive} />
   ) : view === 'ImagePage' ? (
@@ -23,6 +24,7 @@ export default function App() {
   const [isShowingGallery, setIsShowingGallery] = useState(false);
   const [view, setView] = useState('HomePage');
   const [isActive, setIsActive] = useState(false);
+  const [formArr, setFormArr] = useState([]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -67,18 +69,27 @@ export default function App() {
               id="user-header-after-login"
               className="user-header-after-login"
             >
-              <span>FaveBytes! save your favorites.</span>
-              {user.picture && (
+              <div id="profile-container" className="profile-container">
+                {user.picture && (
+                  <img
+                    src={user.picture}
+                    alt={user.name}
+                    style={{ width: 50, height: 50, borderRadius: '50%' }}
+                  />
+                )}
+                <h1> Welcome,</h1>
+                {user.name} 😋
+              </div>
+              <div id="favBytes-container" className="favBytes-container">
                 <img
-                  src={user.picture}
-                  alt={user.name}
-                  style={{ width: 32, height: 32, borderRadius: '50%' }}
+                  className="Logo"
+                  src={logo}
+                  style={{ maxWidth: '250px' }}
                 />
-              )}
-              Welcome, {user.name}!
-              <span>
-                <button onClick={handleLogout}>Log out</button>
-              </span>
+              </div>
+              <div id="logout-container" className="logout-container">
+                <button className='button-style' onClick={handleLogout}>Log out</button>
+              </div>
             </div>
 
             <div id="content-row" className="content-row">
@@ -93,22 +104,24 @@ export default function App() {
                 )}
 
                 <div id="main-area" className="main-area">
-
                   <div id="main-area-menu" className="main-area-menu">
-                    <button onClick={handleToggleSidebar}>
-                      Toggle Sidebar Here
-                    </button>
-                    <button onClick={handleToggleGallery}>
-                      {isShowingGallery ? 'Hide Gallery' : 'Show Gallery'}
+                    <button className='button-style' onClick={handleToggleSidebar}>
+                      {isShowingSidebar ? '← Hide Menu' : ' ☰ See Menu'}
                     </button>
                   </div>
-
                   <div id="main-view" className="main-view">
                     <MainView
                       view={view}
                       isActive={isActive}
                       setIsActive={setIsActive}
                     />
+                  </div>
+                  <div id="gallery-menu" className="gallery-menu">
+                    <button className='button-style' onClick={handleToggleGallery}>
+                      {isShowingGallery
+                        ? '⋆.🗄˚ Hide Gallery ↓'
+                        : '⋆.📷˚ Show Gallery ↑'}
+                    </button>
                   </div>
                 </div>
               </>

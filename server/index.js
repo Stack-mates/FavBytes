@@ -11,24 +11,27 @@ const Dish = require('../database/models/Dish.js');
 const app = express();
 const port = process.env.PORT || 3001;
 
-
 connectDB();
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-app.use(cors({
-  credentials: true
-}));
+app.use(
+  cors({
+    credentials: true,
+  }),
+);
 app.use(bodyParser.json());
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'favbytes-secret-key',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { 
-    secure: false,
-    maxAge: 24 * 60 * 60 * 1000
-  }
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'favbytes-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  }),
+);
 
 app.get('/', (req, res) => {
   res.send('FavBytes API is running...');
@@ -40,7 +43,9 @@ app.get('/api/dishes', async (req, res) => {
     res.status(200).json(dishes);
   } catch (error) {
     console.error('Error fetching dishes:', error);
-    res.status(500).json({ message: 'Error fetching dishes', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error fetching dishes', error: error.message });
   }
 });
 
@@ -58,7 +63,7 @@ app.post('/auth/google', async (req, res) => {
     const updateData = {
       email: payload.email,
       name: payload.name,
-      picture: payload.picture
+      picture: payload.picture,
     };
 
     if (location) {
@@ -68,7 +73,7 @@ app.post('/auth/google', async (req, res) => {
     const user = await User.findOneAndUpdate(
       { googleId: payload.sub },
       updateData,
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
 
     // Save user ID in session
@@ -78,12 +83,13 @@ app.post('/auth/google', async (req, res) => {
 
     res.status(200).json({
       message: 'Authentication successful',
-      user: user
+      user: user,
     });
-
   } catch (error) {
     console.error('Error verifying Google token:', error);
-    res.status(401).json({ message: 'Authentication failed', error: error.message });
+    res
+      .status(401)
+      .json({ message: 'Authentication failed', error: error.message });
   }
 });
 
@@ -99,7 +105,9 @@ app.get('/auth/me', async (req, res) => {
     }
     res.status(200).json({ user });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching user', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error fetching user', error: error.message });
   }
 });
 
@@ -113,6 +121,31 @@ app.post('/auth/logout', (req, res) => {
   });
 });
 
+app.post('/api/favDish', async (req, res) => {
+  const [
+    {
+      userId,
+      name,
+      restaurantName,
+      description,
+      rating,
+      imageUrl,
+      price,
+      location,
+      tags,
+    },
+  ] = req.body;
+
+  try {
+    const dish = { data: 'test response' };
+    res.status(200).json(dish);
+  } catch (error) {
+    console.error('Error updating dish:', error);
+    res
+      .status(500)
+      .json({ message: 'Error updating dish', error: error.message });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);

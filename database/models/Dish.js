@@ -8,6 +8,7 @@ const dishSchema = new mongoose.Schema({
   },
   name: { type: String, required: true },
   restaurantName: { type: String, required: true },
+  imageURL: {type:'string', required: true},
   description: { type: String },
   rating: { type: Number, min: 1, max: 5 },
   imageUrl: { type: String },
