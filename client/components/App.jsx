@@ -7,13 +7,13 @@ import NavBar from './NavigationBar';
 import ImageUpload from './ImageUpload/ImageUpload';
 import logo from '../../public/images/FavBytes.png';
 
-function MainView({ view, isActive, setIsActive }) {
+function MainView({ view, isActive, setIsActive, user }) {
   return view === 'ImageUpload' ? (
     <ImageUpload isActive={isActive} setIsActive={setIsActive} />
   ) : view === 'ImagePage' ? (
     <ImagePage isActive={isActive} setIsActive={setIsActive} />
   ) : (
-    <HomePage isActive={isActive} setIsActive={setIsActive} />
+    <HomePage isActive={isActive} setIsActive={setIsActive} user={user} />
   );
 }
 
@@ -24,7 +24,7 @@ export default function App() {
   const [isShowingGallery, setIsShowingGallery] = useState(false);
   const [view, setView] = useState('HomePage');
   const [isActive, setIsActive] = useState(false);
-  const [formArr, setFormArr] = useState([]);
+ 
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -44,6 +44,7 @@ export default function App() {
   const handleLoginSuccess = (userData) => {
     console.log(userData);
     setUser(userData);
+    vo
   };
 
   const handleLogout = () => {
@@ -112,6 +113,7 @@ export default function App() {
                   <div id="main-view" className="main-view">
                     <MainView
                       view={view}
+                      user={user}
                       isActive={isActive}
                       setIsActive={setIsActive}
                     />
