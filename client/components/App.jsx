@@ -6,13 +6,13 @@ import ImagePage from './ImagePage/ImagePage';
 import NavBar from './NavigationBar';
 import ImageUpload from './ImageUpload/ImageUpload';
 
-function MainView({ view, isActive, setIsActive }) {
+function MainView({ view, isActive, setIsActive, }) {
   return view === 'ImageUpload' ? (
     <ImageUpload isActive={isActive} setIsActive={setIsActive} />
   ) : view === 'ImagePage' ? (
     <ImagePage isActive={isActive} setIsActive={setIsActive} />
   ) : (
-    <HomePage />
+    <HomePage isActive={isActive} setIsActive={setIsActive} />
   );
 }
 
@@ -76,7 +76,9 @@ export default function App() {
                     onToggleGallery={handleToggleGallery}
                   />
                 )}
+
                 <div id="main-area" className="main-area">
+
                   <div id="main-area-menu" className="main-area-menu">
                     <button onClick={handleToggleSidebar}>
                       Toggle Sidebar Here
