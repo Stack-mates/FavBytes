@@ -16,7 +16,9 @@ connectDB();
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-app.use(cors());
+app.use(cors({
+  credentials: true
+}));
 app.use(bodyParser.json());
 app.use(session({
   secret: process.env.SESSION_SECRET || 'favbytes-secret-key',
