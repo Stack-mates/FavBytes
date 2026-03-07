@@ -8,11 +8,13 @@ const connectDB = require('../database/db.js');
 const User = require('../database/models/User.js');
 const Dish = require('../database/models/Dish.js');
 const compression = require('compression');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT;
 
 app.use(compression());
+app.use(express.static(path.join(__dirname, '../dist')));
 
 connectDB();
 
@@ -37,9 +39,6 @@ app.use(
   }),
 );
 
-app.get('/', (req, res) => {
-  res.send('FavBytes API is running...');
-});
 
 app.get('/api/dishes', async (req, res) => {
   try {
@@ -150,6 +149,11 @@ app.post('/api/favDish', async (req, res) => {
       .json({ message: 'Error updating dish', error: error.message });
   }
 });
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
 
 const server = app.listen(port, () => console.log(`Server on ${port}`));
 
