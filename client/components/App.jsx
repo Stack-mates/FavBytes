@@ -9,7 +9,7 @@ import logo from '../../public/images/FavBytes.png';
 
 function MainView({ view, isActive, setIsActive, user }) {
   return view === 'ImageUpload' ? (
-    <ImageUpload isActive={isActive} setIsActive={setIsActive} />
+    <ImageUpload isActive={isActive} setIsActive={setIsActive} user={user} />
   ) : view === 'ImagePage' ? (
     <ImagePage isActive={isActive} setIsActive={setIsActive} />
   ) : (
@@ -116,6 +116,7 @@ export default function App() {
                       user={user}
                       isActive={isActive}
                       setIsActive={setIsActive}
+                      user={user}
                     />
                   </div>
                   <div id="gallery-menu" className="gallery-menu">
