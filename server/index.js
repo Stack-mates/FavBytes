@@ -7,9 +7,12 @@ const { OAuth2Client } = require('google-auth-library');
 const connectDB = require('../database/db.js');
 const User = require('../database/models/User.js');
 const Dish = require('../database/models/Dish.js');
+const compression = require('compression');
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT;
+
+app.use(compression());
 
 connectDB();
 
@@ -23,12 +26,13 @@ app.use(
 app.use(bodyParser.json());
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'favbytes-secret-key',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000,
+      sameSite: 'none',
     },
   }),
 );
@@ -137,7 +141,7 @@ app.post('/api/favDish', async (req, res) => {
   ] = req.body;
 
   try {
-    const dish = { data: 'test response' };
+    const dish = await Dish.create(req.body[0]);
     res.status(200).json(dish);
   } catch (error) {
     console.error('Error updating dish:', error);
@@ -147,6 +151,14 @@ app.post('/api/favDish', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+const server = app.listen(port, () => console.log(`Server on ${port}`));
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  server.close(() => {
+    mongoose.connection.close(false, () => {
+      console.log('MongoDB connection closed.');
+      process.exit(0);
+    });
+  });
 });

@@ -1,20 +1,20 @@
-import { React, useState, } from 'react';
-import ImageUploadStars from './ImageUploadStars';
-import ImageUploadTags from './ImageUploadTags';
+import { React, useState } from "react";
+import ImageUploadStars from "./ImageUploadStars";
+import ImageUploadTags from "./ImageUploadTags";
 
-
-export default function ImageUpload({ isActive = true, setIsActive }) {
+export default function ImageUpload({ isActive = true, setIsActive, user }) {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
+  const [title, setTitle] = useState("");
+  const [restaurantName, setRestaurantName] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [price, setPrice] = useState("");
   const [tags, setTags] = useState([]);
   const [stars, setStars] = useState(1);
-  const [formArr, setFormArr] = useState([]);
 
   console.log(
-    !isActive ? 'ImageUpload is active' : 'ImageUpload is not active',
+    !isActive ? "ImageUpload is active" : "ImageUpload is not active",
   );
 
   const handleImageChange = (e) => {
@@ -35,36 +35,43 @@ export default function ImageUpload({ isActive = true, setIsActive }) {
   //   location,
   //   tags,
   // },
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const formData = {
-      imageURL,
+      userId: user?._id,
       name: title,
-      alt: title + description,
+      restaurantName,
       description,
-      location,
-      price: price,
+      imageUrl: preview, // Placeholder
+      location: { address: location },
+      price: Number(price),
       tags,
       rating: stars,
     };
-    const favByte = async (req, res) => {
-      try {
-        const res = await fetch('/api/favDish', { body: formData });
-        if (res.ok) {
-          const data = await res.json();
-          console.log(data);
-          console.log('Form submitted!', formData);
-        }
-      } catch (err) {
-        console.error('cannot save dish:', err);
+
+    try {
+      const res = await fetch("/api/favDish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify([formData]),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log("Form submitted!", data);
+        setIsActive(false);
       }
-    };
-    return favByte();
+    } catch (err) {
+      console.error("cannot save dish:", err);
+    }
   };
 
   return (
     <form id="image-upload" className="image-upload" onSubmit={handleSubmit}>
       <div id="image-upload-show-here" className="image-upload-show-here">
-        <button className='button-style' type="submit">Submit Image!</button>
+        <button className="button-style" type="submit">
+          Submit Image!
+        </button>
         <input
           type="file"
           accept="image/*"
@@ -77,7 +84,7 @@ export default function ImageUpload({ isActive = true, setIsActive }) {
             <img
               src={preview}
               alt="Preview"
-              style={{ width: '100%', marginTop: '10px' }}
+              style={{ width: "100%", marginTop: "10px" }}
             />
           )}
         </div>
@@ -88,7 +95,7 @@ export default function ImageUpload({ isActive = true, setIsActive }) {
           <input
             type="text"
             value={title}
-            style={{width: "100%"}}
+            style={{ width: "100%" }}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Image Title Goes Here!"
             required
@@ -100,9 +107,22 @@ export default function ImageUpload({ isActive = true, setIsActive }) {
         <label>
           <input
             value={description}
-                        style={{width: "100%"}}
+            style={{ width: "100%" }}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Image Description Goes Here!"
+            required
+          />
+        </label>
+      </div>
+
+      <div id="image-upload-restaurant" className="image-upload-restaurant">
+        <label>
+          <input
+            type="text"
+            value={restaurantName}
+            style={{ width: '100%' }}
+            onChange={(e) => setRestaurantName(e.target.value)}
+            placeholder="Restaurant Name Goes Here!"
             required
           />
         </label>
@@ -113,9 +133,21 @@ export default function ImageUpload({ isActive = true, setIsActive }) {
           <input
             type="text"
             value={location}
-                        style={{width: "100%"}}
+            style={{ width: '100%' }}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Image Location Goes Here!"
+          />
+        </label>
+      </div>
+
+      <div id="image-upload-price" className="image-upload-price">
+        <label>
+          <input
+            type="number"
+            value={price}
+            style={{ width: '100%' }}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="Price Goes Here!"
           />
         </label>
       </div>
