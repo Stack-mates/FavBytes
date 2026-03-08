@@ -105,30 +105,18 @@ export default function ImageUpload({
             <span style={{ color: 'white' }}>Image Preview</span>
           )}
         </div>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          required
-        />
-        {submitStatus === 'loading' && (
-          <p style={{ color: 'yellow' }}>Saving your dish... 🍽️</p>
-        )}
-        {submitStatus === 'success' && (
-          <p style={{ color: 'lightgreen' }}>
-            Saved! Heading back to the map... 📍
-          </p>
-        )}
-        {submitStatus === 'error' && (
-          <p style={{ color: 'salmon' }}>Something went wrong. Try again!</p>
-        )}
-
-        <button
-          className="button-style"
-          type="submit"
-          disabled={submitStatus === 'loading'} // prevent double-submit
-        >
-          {submitStatus === 'loading' ? 'Saving...' : 'Submit Image!'}
+        <label className="button-style">
+          {image ? image.name : 'Choose File'}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            required
+            style={{ display: 'none' }}
+          />
+        </label>
+        <button className="button-style" type="submit">
+          Submit Image!
         </button>
       </div>
 

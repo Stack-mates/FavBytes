@@ -10,7 +10,7 @@ const Dish = require('../database/models/Dish.js');
 const compression = require('compression');
 const path = require('path');
 const mongoose = require('mongoose');
-const upload = require('./upload.js')
+const upload = require('./upload');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -44,7 +44,9 @@ app.use(
 
 // Logging middleware
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Session ID: ${req.sessionID}`);
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} ${req.url} - Session ID: ${req.sessionID}`,
+  );
   next();
 });
 
@@ -58,7 +60,9 @@ app.get('/api/dishes', async (req, res) => {
     res.status(200).json(dishes);
   } catch (error) {
     console.error('Error fetching dishes:', error);
-    res.status(500).json({ message: 'Error fetching dishes', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error fetching dishes', error: error.message });
   }
 });
 
@@ -84,14 +88,21 @@ app.post('/auth/google', async (req, res) => {
       { upsert: true, new: true },
     );
     req.session.userId = user._id;
-    console.log('Successfully authenticated/verified user:', user.email, 'Session UID:', req.session.userId);
+    console.log(
+      'Successfully authenticated/verified user:',
+      user.email,
+      'Session UID:',
+      req.session.userId,
+    );
     res.status(200).json({
       message: 'Authentication successful',
       user: user,
     });
   } catch (error) {
     console.error('Error verifying Google token:', error);
-    res.status(401).json({ message: 'Authentication failed', error: error.message });
+    res
+      .status(401)
+      .json({ message: 'Authentication failed', error: error.message });
   }
 });
 
@@ -107,7 +118,9 @@ app.get('/auth/me', async (req, res) => {
     }
     res.status(200).json({ user });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching user', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error fetching user', error: error.message });
   }
 });
 
@@ -116,42 +129,50 @@ app.post('/auth/logout', (req, res) => {
     if (err) {
       return res.status(500).json({ message: 'Could not log out' });
     }
-    res.clearCookie('connect.sid');
+    res.clearCookie('connect.sid', {
+      secure: true,
+      sameSite: 'none',
+      path: '/',
+    });
     res.status(200).json({ message: 'Logged out successfully' });
   });
 });
 
 app.post('/api/favDish', upload.single('image'), async (req, res) => {
-  console.log('req.file:', req.file);
   try {
-    const { userId, name, restaurantName, description, rating, price, location, lng, lat, tags } = req.body;
-
-    const dish = await Dish.create({
+    const {
       userId,
       name,
       restaurantName,
       description,
+      rating,
+      price,
+      location,
+      tags,
+    } = req.body;
+
+    const newDish = await Dish.create({
+      userId,
+      name,
+      restaurantName,
+      imageUrl: req.file.location,
+      description,
       rating: Number(rating),
       price: Number(price),
-      imageUrl: req.file.location,
-      location: {
-        address: location,
-        coordinates: {
-          lat: lat ? Number(lat) : undefined,
-          lng: lng ? Number(lng) : undefined,
-        },
-      },
-      tags: JSON.parse(tags || '[]'),
+      location: { address: location },
+      tags: JSON.parse(tags),
     });
 
-    res.status(201).json(dish);
+    res.status(200).json(newDish);
   } catch (error) {
-    console.error('Error creating dish:', error);
-    res.status(500).json({ message: 'Error creating dish', error: error.message });
+    console.error('Error saving dish:', error);
+    res
+      .status(500)
+      .json({ message: 'Error saving dish', error: error.message });
   }
 });
 
-// Catch-all route to serve the built index.html (Express 5 compatible regex)
+// Catch-all route to serve the built index.html
 app.get(/^(?!\/api|\/auth).*/, (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
