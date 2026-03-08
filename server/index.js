@@ -131,29 +131,17 @@ app.post('/auth/logout', (req, res) => {
 });
 
 app.post('/api/favDish', upload.single('image'), async (req, res) => {
-	const imageUrl = req.file.location;
-	const [
-		{
-			userId,
-			name,
-			restaurantName,
-			description,
-			rating,
-			price,
-			location,
-			tags,
-		},
-	] = req.body;
-
-	try {
-		const dish = await Dish.create(req.body[0]);
-		res.status(200).json(dish);
-	} catch (error) {
-		console.error('Error updating dish:', error);
-		res
-			.status(500)
-			.json({ message: 'Error updating dish', error: error.message });
-	}
+  try {
+    const dishData = {
+      ...req.body,
+      imageUrl: req.file.location,
+      tags: JSON.parse(req.body.tags)
+    };
+    const dish = await Dish.create(dishData);
+    res.status(200).json(dish);
+  } catch (error) {
+    res.status(500).json({ message: 'Error saving dish' });
+  }
 });
 
 app.use((req, res) => {

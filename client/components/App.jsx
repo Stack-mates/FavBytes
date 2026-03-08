@@ -24,7 +24,6 @@ export default function App() {
   const [isShowingGallery, setIsShowingGallery] = useState(false);
   const [view, setView] = useState('HomePage');
   const [isActive, setIsActive] = useState(false);
-  const [formArr, setFormArr] = useState([]);
 
   useEffect(() => {
     const checkAuth = async () => {
