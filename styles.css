@@ -12,12 +12,15 @@
   logs: true;
 }
 .button-style {
+  display: inline-block;
   height: fit-content;
   background-color: #9c5273;
   color: black;
   border-radius: 12px;
   padding: 10px;
   border-color: black;
+  cursor: pointer;
+  text-align: center;
 
   box-shadow:
     rgba(0, 0, 0, 0.07) 0px 1px 1px,

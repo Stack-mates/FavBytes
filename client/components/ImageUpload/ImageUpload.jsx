@@ -73,12 +73,16 @@ const handleSubmit = async (e) => {
             <span style={{ color: "white" }}>Image Preview</span>
           )}
         </div>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          required
-        />
+        <label className="button-style">
+          {image ? image.name : "Choose File"}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            required
+            style={{ display: "none" }}
+          />
+        </label>
         <button className="button-style" type="submit">
           Submit Image!
         </button>
