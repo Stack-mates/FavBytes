@@ -1,14 +1,14 @@
-import { React, useState } from "react";
+import React, { useState, useEffect } from 'react';
 import ImageUploadStars from "./ImageUploadStars";
 import ImageUploadTags from "./ImageUploadTags";
 
-export default function ImageUpload({ isActive = true, setIsActive, user }) {
+export default function ImageUpload({ isActive, setIsActive, user, prefillLocation }) {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [title, setTitle] = useState("");
   const [restaurantName, setRestaurantName] = useState("");
   const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(prefillLocation?.placeName ?? '');
   const [price, setPrice] = useState("");
   const [tags, setTags] = useState([]);
   const [stars, setStars] = useState(1);
@@ -16,6 +16,10 @@ export default function ImageUpload({ isActive = true, setIsActive, user }) {
   console.log(
     !isActive ? "ImageUpload is active" : "ImageUpload is not active",
   );
+
+    useEffect(() => {
+    if (prefillLocation?.placeName) setLocation(prefillLocation.placeName);
+  }, [prefillLocation]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -31,6 +35,7 @@ export default function ImageUpload({ isActive = true, setIsActive, user }) {
   //   description,
   //   rating,
   //   imageUrl,
+  
   //   price,
   //   location,
   //   tags,

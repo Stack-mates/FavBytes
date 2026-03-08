@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import HomePage from './HomePage/HomePage';
 import Gallery from './Gallery/Gallery';
 import LogIn from './LogIn';
@@ -7,9 +7,23 @@ import NavBar from './NavigationBar';
 import ImageUpload from './ImageUpload/ImageUpload';
 import logo from '../../public/images/FavBytes.png';
 
-function MainView({ view, isActive, setIsActive, user, dishes }) {
+function MainView({
+  view,
+  isActive,
+  setIsActive,
+  user,
+  dishes,
+  setView,
+  setSelectedLocation,
+  selectedLocation,
+}) {
   return view === 'ImageUpload' ? (
-    <ImageUpload isActive={isActive} setIsActive={setIsActive} user={user} />
+    <ImageUpload
+      isActive={isActive}
+      setIsActive={setIsActive}
+      user={user}
+      prefillLocation={selectedLocation}
+    />
   ) : view === 'ImagePage' ? (
     <ImagePage isActive={isActive} setIsActive={setIsActive} />
   ) : (
@@ -18,6 +32,8 @@ function MainView({ view, isActive, setIsActive, user, dishes }) {
       setIsActive={setIsActive}
       user={user}
       dishes={dishes}
+      setView={setView}
+      setSelectedLocation={setSelectedLocation}
     />
   );
 }
@@ -30,7 +46,8 @@ export default function App() {
   const [isActive, setIsActive] = useState(false);
   const [dishes, setDishes] = useState([]);
   const [selectedDish, setSelectedDish] = useState(null);
-
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -45,7 +62,6 @@ export default function App() {
     };
     checkAuth();
   }, []);
-
 
   useEffect(() => {
     fetch('/api/dishes')
@@ -142,6 +158,9 @@ export default function App() {
                       dishes={dishes}
                       isActive={isActive}
                       setIsActive={setIsActive}
+                      setView={setView}
+                      setSelectedLocation={setSelectedLocation}
+                      selectedLocation={selectedLocation}
                     />
                   </div>
                   <div id="gallery-menu" className="gallery-menu">

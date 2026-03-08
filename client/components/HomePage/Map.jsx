@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Map, { Marker, Popup } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { SearchBox } from '@mapbox/search-js-react';
 
-export default function AppMap({ user, dishes }) {
+export default function AppMap({ user, dishes, setView, setSelectedLocation }) {
   const [selectedDish, setSelectedDish] = useState(null);
-
-  // useEffect(() => {
-  //   fetch('/api/dishes')
-  //     .then((res) => res.json())
-  //     .then((data) => setDishes(data))
-  //     .catch((err) => console.error(err));
-  // }, []);
+  const [inputValue, setInputValue] = useState('');
 
   const initialViewState = {
     longitude: user?.location?.coordinates?.lng ?? -74.006,
@@ -18,16 +13,22 @@ export default function AppMap({ user, dishes }) {
     zoom: 11,
   };
 
-  console.log(initialViewState);
   return (
-    <div
-      style={{
-        height: '100%',
-        width: '100%',
-        borderRadius: '12px',
-        overflow: 'hidden',
-      }}
-    >
+    <div style={{ height: '100%', width: '100%', borderRadius: '12px', overflow: 'hidden', position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)', zIndex: 10, width: '320px' }}>
+        <SearchBox
+          accessToken={MAPBOX_TOKEN}
+          value={inputValue}
+          onChange={(v) => setInputValue(v)}
+          onRetrieve={(result) => {
+            const [lng, lat] = result.features[0].geometry.coordinates;
+            const placeName = result.features[0].properties.full_address;
+            setSelectedLocation({ lng, lat, placeName });
+            setView('ImageUpload');
+          }}
+        />
+      </div>
+
       <Map
         initialViewState={initialViewState}
         mapStyle="mapbox://styles/mapbox/streets-v12"
@@ -35,7 +36,7 @@ export default function AppMap({ user, dishes }) {
         style={{ width: '100%', height: '100%' }}
       >
         {dishes.map((dish) =>
-          dish.location && dish.location.coordinates ? (
+          dish.location?.coordinates ? (
             <Marker
               key={dish._id}
               longitude={dish.location.coordinates.lng}
@@ -48,7 +49,7 @@ export default function AppMap({ user, dishes }) {
             >
               <div style={{ fontSize: '24px', cursor: 'pointer' }}>📍😋</div>
             </Marker>
-          ) : null,
+          ) : null
         )}
 
         {selectedDish && (
