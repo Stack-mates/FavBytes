@@ -84,7 +84,6 @@ export default function App() {
 
 			if (res.ok) {
 				setUser(null);
-				// Reset UI state too!
 				setView('HomePage');
 				setIsShowingSidebar(false);
 			}

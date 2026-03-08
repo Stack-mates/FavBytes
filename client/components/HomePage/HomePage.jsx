@@ -9,8 +9,10 @@ export default function HomePage({
 }) {
   return (
     <div id="homePage" className="homePage">
-      <div id="byteList">
-        <ByteList dishes={dishes} user={user} />
+      <div id="byteList-container" className="byteList-container">
+        <div id="byteList" className="byteList">
+          <ByteList dishes={dishes} user={user} />
+        </div>
       </div>
       <div id="map" className="map">
         <Map

@@ -200,14 +200,12 @@
   height: 100%;
 }
 .byteList-container {
-  flex: 1;
-
   display: flex;
   justify-self: left;
   position: relative;
-  max-height: 95%;
   border-radius: 12px;
   max-width: 30%;
+  flex-direction: column;
 }
 
 .byteList {
@@ -218,6 +216,7 @@
   justify-self: center;
   border-radius: 12px;
   padding: 25px;
+  flex-direction: column;
 }
 
 .dish {
@@ -227,7 +226,6 @@
   position: relative;
   max-height: 95%;
   border-radius: 12px;
-
 }
 
 .map {
@@ -236,7 +234,6 @@
   width: 100%;
   height: 100%;
   position: relative;
-  overflow: hidden;
 }
 
 .image-upload {
