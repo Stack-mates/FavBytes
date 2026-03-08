@@ -122,7 +122,7 @@ app.post('/auth/logout', (req, res) => {
 
 app.post('/api/favDish', async (req, res) => {
   try {
-    const dish = await Dish.create(req.body[0]);
+    const dish = await Dish.create(req.body);
     res.status(200).json(dish);
   } catch (error) {
     console.error('Error updating dish:', error);
