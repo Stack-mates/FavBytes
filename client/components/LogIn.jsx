@@ -39,26 +39,22 @@ export default function LogIn({ onLoginSuccess }) {
 				throw new Error('Authentication failed');
 			}
 
-			const data = await res.json();
-			console.log('Authenticated user:', data.user);
-			onLoginSuccess(data.user);
-		} catch (err) {
-			console.error('Login error:', err);
-		}
-	};
-	return (
-		<div id='login-container' className='login-container'>
-			<div>
-				<img className='Logo' src={logo} />
-			</div>
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<div id='user-header-before-login' className='user-header-before-login'>
-				<h1>Welcome! Please Log-In:</h1>
-			</div>
+      const data = await res.json();
+      console.log('Authenticated user:', data.user);
+      onLoginSuccess(data.user);
+    } catch (err) {
+      console.error('Login error:', err);
+    }
+  };
+  return (
+    <div id="login-container" className="login-container">
+      <div>
+        <img className="Logo" src={logo} />
+      </div>
+
+      <div id="user-header-before-login" className="user-header-before-login">
+        <h1>Welcome! Please Log-In:</h1>
+      </div>
 
 			<div id='google-button' className='google-button'>
 				<GoogleLogin

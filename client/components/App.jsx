@@ -24,6 +24,7 @@ export default function App() {
   const [isShowingGallery, setIsShowingGallery] = useState(false);
   const [view, setView] = useState('HomePage');
   const [isActive, setIsActive] = useState(false);
+ 
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -43,6 +44,7 @@ export default function App() {
   const handleLoginSuccess = (userData) => {
     console.log(userData);
     setUser(userData);
+    vo
   };
 
   const handleLogout = async () => {
@@ -120,6 +122,7 @@ export default function App() {
                   <div id="main-view" className="main-view">
                     <MainView
                       view={view}
+                      user={user}
                       isActive={isActive}
                       setIsActive={setIsActive}
                       user={user}
