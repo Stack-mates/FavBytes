@@ -6,6 +6,7 @@ import ImagePage from './ImagePage/ImagePage';
 import NavBar from './NavigationBar';
 import ImageUpload from './ImageUpload/ImageUpload';
 import logo from '../../public/images/FavBytes.png';
+import { googleLogout } from '@react-oauth/google';
 
 function MainView({
   view,
@@ -16,13 +17,16 @@ function MainView({
   setView,
   setSelectedLocation,
   selectedLocation,
+  fetchDishes,
 }) {
   return view === 'ImageUpload' ? (
     <ImageUpload
       isActive={isActive}
       setIsActive={setIsActive}
       user={user}
+      setView={setView}
       prefillLocation={selectedLocation}
+      fetchDishes={fetchDishes}
     />
   ) : view === 'ImagePage' ? (
     <ImagePage isActive={isActive} setIsActive={setIsActive} />
@@ -47,7 +51,7 @@ export default function App() {
   const [dishes, setDishes] = useState([]);
   const [selectedDish, setSelectedDish] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
-  
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -63,28 +67,39 @@ export default function App() {
     checkAuth();
   }, []);
 
-  useEffect(() => {
-    fetch('/api/dishes')
-      .then((res) => res.json())
-      .then((data) => setDishes(data))
-      .catch((err) => console.error(err));
-  }, []);
-  const handleLoginSuccess = (userData) => {
-    console.log(userData);
-    setUser(userData);
-  };
+const fetchDishes = () => {
+  fetch('/api/dishes')
+    .then((res) => res.json())
+    .then((data) => setDishes(data))
+    .catch((err) => console.error(err));
+};
+
+const handleLoginSuccess = (userData) => {
+  setUser(userData);
+  fetchDishes();
+};
+
+useEffect(() => {
+  fetchDishes();
+}, []);
 
   const handleLogout = async () => {
     try {
-      await fetch('/auth/logout', {
+      const res = await fetch('/auth/logout', {
         method: 'POST',
         credentials: 'include',
       });
 
-      setUser(null);
+      if (res.ok) {
+        setUser(null);
+        setView('HomePage');
+        setIsShowingSidebar(false);
+      }
     } catch (err) {
       console.error('Logout failed:', err);
     }
+    googleLogout();
+    setUser(null);
   };
 
   const handleToggleSidebar = () => {
@@ -159,6 +174,7 @@ export default function App() {
                       isActive={isActive}
                       setIsActive={setIsActive}
                       setView={setView}
+                      fetchDishes={fetchDishes}
                       setSelectedLocation={setSelectedLocation}
                       selectedLocation={selectedLocation}
                     />
@@ -178,7 +194,7 @@ export default function App() {
             </div>
             {isShowingGallery && (
               <div id="gallery-section" className="gallery-section">
-                <Gallery searchArr={searchArr} setSearchArr={setSearchArr} />
+                <Gallery dishes={dishes} searchArr={searchArr} setSearchArr={setSearchArr} />
               </div>
             )}
           </div>

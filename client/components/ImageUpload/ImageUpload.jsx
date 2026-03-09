@@ -1,23 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import ImageUploadStars from "./ImageUploadStars";
-import ImageUploadTags from "./ImageUploadTags";
+import ImageUploadStars from './ImageUploadStars';
+import ImageUploadTags from './ImageUploadTags';
+import { SearchBox } from '@mapbox/search-js-react';
 
-export default function ImageUpload({ isActive, setIsActive, user, prefillLocation }) {
+export default function ImageUpload({
+  isActive,
+  setIsActive,
+  user,
+  fetchDishes = { fetchDishes },
+  setView,
+  prefillLocation,
+}) {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [title, setTitle] = useState("");
-  const [restaurantName, setRestaurantName] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState('');
+  const [restaurantName, setRestaurantName] = useState('');
+  const [description, setDescription] = useState('');
   const [location, setLocation] = useState(prefillLocation?.placeName ?? '');
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState('');
   const [tags, setTags] = useState([]);
   const [stars, setStars] = useState(1);
+  const [showLocationSearch, setShowLocationSearch] = useState(false);
+  const [locationInput, setLocationInput] = useState('');
+  const [locationCoords, setLocationCoords] = useState(
+    prefillLocation
+      ? { lng: prefillLocation.lng, lat: prefillLocation.lat }
+      : null,
+  );
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   console.log(
-    !isActive ? "ImageUpload is active" : "ImageUpload is not active",
+    !isActive ? 'ImageUpload is active' : 'ImageUpload is not active',
   );
 
-    useEffect(() => {
+  useEffect(() => {
     if (prefillLocation?.placeName) setLocation(prefillLocation.placeName);
   }, [prefillLocation]);
 
@@ -28,41 +44,48 @@ export default function ImageUpload({ isActive, setIsActive, user, prefillLocati
       setPreview(URL.createObjectURL(file));
     }
   };
-  //   {
-  //   userId,
-  //   name,
-  //   restaurantName,
-  //   description,
-  //   rating,
-  //   imageUrl,
-  
-  //   price,
-  //   location,
-  //   tags,
-  // },
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  const formData = new FormData();
-  formData.append("image", image);
-  formData.append("userId", user._id);
-  formData.append("name", title);
-  formData.append("restaurantName", restaurantName);
-  formData.append("description", description);
-  formData.append("rating", stars);
-  formData.append("price", price);
-  formData.append("location", location);
-  formData.append("tags", JSON.stringify(tags));
 
-  try {
-    const res = await fetch("/api/favDish", {
-      method: "POST",
-      body: formData, 
-    });
-  } catch (err) {
-    console.error(err);
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitStatus('loading');
+
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('userId', user._id);
+    formData.append('name', title);
+    formData.append('restaurantName', restaurantName);
+    formData.append('description', description);
+    formData.append('rating', stars);
+    formData.append('price', price);
+    formData.append('location', location);
+
+    if (locationCoords) {
+      formData.append('lng', locationCoords.lng);
+      formData.append('lat', locationCoords.lat);
+    }
+    formData.append('tags', JSON.stringify(tags));
+
+    try {
+      const res = await fetch('/api/favDish', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error('Server error response:', text);
+        setSubmitStatus('error');
+        return;
+      }
+
+      setSubmitStatus('success');
+      fetchDishes();
+      setTimeout(() => setView('HomePage'), 1500);
+    } catch (err) {
+      console.error(err);
+      setSubmitStatus('error');
+    }
+  };
 
   return (
     <form id="image-upload" className="image-upload" onSubmit={handleSubmit}>
@@ -72,18 +95,26 @@ const handleSubmit = async (e) => {
             <img
               src={preview}
               alt="Preview"
-              style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
             />
           ) : (
-            <span style={{ color: "white" }}>Image Preview</span>
+            <span style={{ color: 'white' }}>Image Preview</span>
           )}
         </div>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          required
-        />
+        <label className="button-style">
+          {image ? image.name : 'Choose File'}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            required
+            style={{ display: 'none' }}
+          />
+        </label>
         <button className="button-style" type="submit">
           Submit Image!
         </button>
@@ -95,7 +126,7 @@ const handleSubmit = async (e) => {
             <input
               type="text"
               value={title}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Image Title Goes Here!"
               required
@@ -107,7 +138,7 @@ const handleSubmit = async (e) => {
           <label>
             <input
               value={description}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Image Description Goes Here!"
               required
@@ -138,6 +169,33 @@ const handleSubmit = async (e) => {
               placeholder="Image Location Goes Here!"
             />
           </label>
+
+          <button
+            type="button"
+            onClick={() => setShowLocationSearch(!showLocationSearch)}
+            className="button-style"
+            style={{ marginLeft: '8px' }}
+          >
+            {showLocationSearch ? 'Cancel' : 'Not the right location?'}
+          </button>
+
+          {showLocationSearch && (
+            <div style={{ marginTop: '8px' }}>
+              <SearchBox
+                accessToken={MAPBOX_TOKEN}
+                value={locationInput}
+                onChange={(v) => setLocationInput(v)}
+                onRetrieve={(result) => {
+                  const [lng, lat] = result.features[0].geometry.coordinates;
+                  const placeName = result.features[0].properties.full_address;
+                  setLocation(placeName);
+                  setLocationCoords({ lng, lat });
+                  setLocationInput('');
+                  setShowLocationSearch(false);
+                }}
+              />
+            </div>
+          )}
         </div>
 
         <div id="image-upload-price" className="image-upload-price">
