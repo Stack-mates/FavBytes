@@ -84,6 +84,9 @@
   border: 1px solid rgba(212, 175, 55, 0.4);
   position: relative;
   overflow: hidden;
+  height: fit-content;
+  flex: 1;
+  width: 100%;
   cursor: pointer;
   box-shadow:
     inset 0 1px rgba(255, 255, 255, 0.25),
@@ -203,7 +206,7 @@
     flex-direction: column;
     justify-content: space-around;
     width: fit-content;
-      align-items: center;
+    align-items: center;
     max-width: 15%;
     height: 100%;
     padding: var(--pad-section);
@@ -215,7 +218,7 @@
   flex-direction: column;
   justify-content: space-around;
   width: 100%;
-    align-items: center;
+  align-items: center;
   height: 100%;
   padding: var(--pad-section);
   background-color: var(--moss);
@@ -374,6 +377,7 @@
   position: relative;
   flex-direction: column;
   justify-content: center;
+  border-radius: var(--radius);
   overflow: hidden;
   flex-wrap: wrap;
 }
@@ -392,17 +396,20 @@
 .image-upload-tag-box {
   display: flex;
   flex-shrink: 0;
-  width: 100%;
+  width: fit content;
   position: relative;
   flex-direction: row;
   justify-content: space-between;
   background-color: #5f8f6b;
+  border-radius: var(--radius);
 }
 
 .image-upload-tag-list {
   display: flex;
   position: relative;
+  width: fit content;
   flex-shrink: 0;
+  border-radius: var(--radius);
   flex-direction: column;
 }
 
@@ -410,9 +417,10 @@
   display: flex;
   border-radius: var(--radius);
   width: 100%;
+  width: fit content;
   height: fit-content;
   color: #2b3b28;
-
+  border-radius: var(--radius);
   background-color: #5f8f6b;
   box-shadow: var(--soft-shadow);
   position: relative;
@@ -421,19 +429,19 @@
   display: flex;
   flex-shrink: 0;
   position: relative;
-
+  width: fit content;
   width: 100%;
+  border-radius: var(--radius);
   flex-direction: row;
   justify-content: space-between;
   background-color: #5f8f6b;
 }
 
-
-
 .image-upload-stars-choice {
   display: flex;
   position: relative;
   flex-shrink: 0;
+  border-radius: var(--radius);
   flex-direction: column;
 }
 
@@ -450,7 +458,6 @@
 @media (min-width: 640px) {
   .current-image {
     flex-direction: column;
-    align-items: flex-start;
   }
 }
 
@@ -459,10 +466,10 @@
   flex-direction: column;
   gap: var(--gap-md);
   border-radius: var(--radius);
-  background: var(--panel);
   background-color: #5f8f6b;
   width: 100%;
   position: relative;
+  height: fit-content;
   box-shadow: var(--soft-shadow);
 }
 
@@ -482,12 +489,15 @@
 
 .current-image-title,
 .current-image-description,
-.current-image-location {
+.current-image-restaurant,
+.current-image-rating,
+.current-image-location,
+.current-image-price {
   width: 100%;
   border-radius: var(--radius);
   padding: var(--pad-card);
   position: relative;
-  background: linear-gradient(145deg, #e6f0e8, #d3e6d6);
+  background-color: #5f8f6b;
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.12);
 }
 
@@ -497,6 +507,7 @@
   background: linear-gradient(145deg, #f3e3a1, #e6c96f);
   padding: var(--pad-card);
   flex: 1;
+  height: fit-content;
   border-radius: var(--radius);
   color: #2b3b28;
   box-shadow: var(--soft-shadow);

@@ -38,7 +38,7 @@ export default function ImagePage({ dish, setView }) {
             <span style={{ color: 'white' }}>No Image</span>
           )}
         </div>
-
+        <div id="current-image-items" className="current-image-items">
           <div id="current-image-title" className="current-image-title">
             <h3>{dish.name}</h3>
           </div>
@@ -66,6 +66,7 @@ export default function ImagePage({ dish, setView }) {
           <div id="current-image-tags" className="current-image-tags">
             <ImageTags tags={dish.tags} />
           </div>
+        </div>
       </div>
     </div>
   );
